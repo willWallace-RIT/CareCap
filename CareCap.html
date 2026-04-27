@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Care Capacity Cost App</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    #capacity {
+      font-size: 56px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    input {
+      display: block;
+      margin: 8px 0;
+      padding: 8px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Daily Care Capacity</h1>
+
+  <div id="capacity">100</div>
+
+  <button onclick="resetCapacity()">Reset Capacity</button>
+
+  <h2>Care Actions</h2>
+  <div id="buttons"></div>
+
+  <h2>Add Action</h2>
+  <input id="name" placeholder="Action name" />
+  <input id="cost" type="number" placeholder="Cost" />
+  <button onclick="addButton()">Add Button</button>
+
+<script>
+  let capacity = 100;
+  let buttons = [
+    { name: "Basic Care", cost: 5 },
+    { name: "Extended Care", cost: 15 }
+  ];
+
+  function render() {
+    document.getElementById("capacity").innerText = capacity;
+
+    const container = document.getElementById("buttons");
+    container.innerHTML = "";
+
+    buttons.forEach((btn, i) => {
+      const el = document.createElement("button");
+      el.innerText = `${btn.name} (-${btn.cost})`;
+      el.onclick = () => {
+        capacity = Math.max(0, capacity - btn.cost);
+        render();
+      };
+      container.appendChild(el);
+    });
+  }
+
+  function addButton() {
+    const name = document.getElementById("name").value;
+    const cost = Number(document.getElementById("cost").value);
+
+    if (!name) return;
+
+    buttons.push({ name, cost });
+
+    document.getElementById("name").value = "";
+    document.getElementById("cost").value = "";
+
+    render();
+  }
+
+  function resetCapacity() {
+    capacity = 100;
+    render();
+  }
+
+  render();
+</script>
+
+</body>
+</html>
